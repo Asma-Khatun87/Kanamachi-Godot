@@ -1,0 +1,34 @@
+name: Godot Build
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Download Godot (headless)
+        run: |
+          wget https://downloads.tuxfamily.org/godotengine/4.4/Godot_v4.4-stable_linux_headless.64.zip -O godot.zip
+          unzip godot.zip
+
+      - name: Export HTML5
+        run: ./Godot_v4.4-stable_linux_headless.64 --headless --export "HTML5" build/html5/
+
+      - name: Export Windows
+        run: ./Godot_v4.4-stable_linux_headless.64 --headless --export "Windows Desktop" build/windows/Kanamachi.exe
+
+      - name: Upload HTML5 Build
+        uses: actions/upload-artifact@v3
+        with:
+          name: html5-build
+          path: build/html5/
+
+      - name: Upload Windows Build
+        uses: actions/upload-artifact@v3
+        with:
+          name: windows-build
+          path: build/windows/
