@@ -1,0 +1,23 @@
+name: Godot HTML5 Build
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Download Godot
+        run: wget https://downloads.tuxfamily.org/godotengine/4.4/Godot_v4.4-stable_linux_headless.64.zip -O godot.zip && unzip godot.zip
+
+      - name: Export HTML5
+        run: ./Godot_v4.4-stable_linux_headless.64 --headless --export "HTML5" build/
+
+      - name: Upload Build
+        uses: actions/upload-artifact@v3
+        with:
+          name: html5-build
+          path: build/
