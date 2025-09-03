@@ -1,0 +1,143 @@
+[gd_scene load_steps=6 format=3]
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1")
+
+[node name="Background" type="Sprite2D" parent="."]
+position = Vector2(640, 360)
+texture = ExtResource("2")
+
+[node name="Player" type="CharacterBody2D" parent="."]
+position = Vector2(640, 360)
+script = ExtResource("3")
+
+[node name="Sprite2D" type="Sprite2D" parent="Player"]
+texture = ExtResource("4")
+centered = true
+
+[node name="TagArea" type="Area2D" parent="Player"]
+ 
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player/TagArea"]
+shape = CircleShape2D {
+    radius = 80.0
+}
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Player"]
+
+[node name="PingAudio" type="AudioStreamPlayer" parent="Player"]
+stream = ExtResource("8")
+
+[node name="ProximityTimer" type="Timer" parent="Player"]
+wait_time = 0.25
+autostart = true
+one_shot = false
+
+[node name="Runners" type="Node2D" parent="."]
+
+[node name="Runner1" type="CharacterBody2D" parent="Runners"]
+position = Vector2(1000, 300)
+script = ExtResource("5")
+
+[node name="Sprite2D" type="Sprite2D" parent="Runners/Runner1"]
+texture = ExtResource("6")
+centered = true
+
+[node name="Reveal" type="ColorRect" parent="Runners/Runner1"]
+position = Vector2(-48, -48)
+size = Vector2(96, 96)
+color = Color(1, 1, 1, 0.15)
+visible = false
+
+[node name="Think" type="Timer" parent="Runners/Runner1"]
+wait_time = 0.8
+autostart = true
+
+[node name="TagAudio" type="AudioStreamPlayer" parent="Runners/Runner1"]
+stream = ExtResource("7")
+
+[node name="Runner2" type="CharacterBody2D" parent="Runners"]
+position = Vector2(1200, 700)
+script = ExtResource("5")
+
+[node name="Sprite2D" type="Sprite2D" parent="Runners/Runner2"]
+texture = ExtResource("9")
+centered = true
+
+[node name="Reveal" type="ColorRect" parent="Runners/Runner2"]
+position = Vector2(-48, -48)
+size = Vector2(96, 96)
+color = Color(1, 1, 1, 0.15)
+visible = false
+
+[node name="Think" type="Timer" parent="Runners/Runner2"]
+wait_time = 0.8
+autostart = true
+
+[node name="TagAudio" type="AudioStreamPlayer" parent="Runners/Runner2"]
+stream = ExtResource("7")
+
+[node name="Runner3" type="CharacterBody2D" parent="Runners"]
+position = Vector2(300, 900)
+script = ExtResource("5")
+
+[node name="Sprite2D" type="Sprite2D" parent="Runners/Runner3"]
+texture = ExtResource("10")
+centered = true
+
+[node name="Reveal" type="ColorRect" parent="Runners/Runner3"]
+position = Vector2(-48, -48)
+size = Vector2(96, 96)
+color = Color(1, 1, 1, 0.15)
+visible = false
+
+[node name="Think" type="Timer" parent="Runners/Runner3"]
+wait_time = 0.8
+autostart = true
+
+[node name="TagAudio" type="AudioStreamPlayer" parent="Runners/Runner3"]
+stream = ExtResource("7")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Info" type="Label" parent="CanvasLayer"]
+offset_left = 16.0
+offset_top = 8.0
+offset_right = 900.0
+offset_bottom = 48.0
+text = "Arena | Tag the three runners! Move: WASD/Arrows, Ping: Q"
+theme_override_font_sizes/font_size = 22
+
+[node name="NextButton" type="TextureButton" parent="CanvasLayer"]
+offset_left = 1060.0
+offset_top = 16.0
+texture_normal = ExtResource("11")
+
+[node name="PingButton" type="TextureButton" parent="CanvasLayer"]
+offset_left = 1060.0
+offset_top = 140.0
+texture_normal = ExtResource("12")
+
+[node name="StartSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("13")
+
+[connection signal="timeout" from="Player/ProximityTimer" to="Player" method="_on_ProximityTimer_timeout"]
+[connection signal="body_entered" from="Player/TagArea" to="Player" method="_on_TagArea_body_entered"]
+[connection signal="timeout" from="Runners/Runner1/Think" to="Runners/Runner1" method="_on_Think_timeout"]
+[connection signal="timeout" from="Runners/Runner2/Think" to="Runners/Runner2" method="_on_Think_timeout"]
+[connection signal="timeout" from="Runners/Runner3/Think" to="Runners/Runner3" method="_on_Think_timeout"]
+[connection signal="pressed" from="CanvasLayer/NextButton" to="." method="_on_NextButton_pressed"]
+[connection signal="pressed" from="CanvasLayer/PingButton" to="." method="_on_PingButton_pressed"]
+
+[ext_resource type="Script" path="res://scripts/Main.gd" id="1"]
+[ext_resource type="Texture2D" path="res://assets/bg_village.png" id="2"]
+[ext_resource type="Script" path="res://scripts/Player.gd" id="3"]
+[ext_resource type="Texture2D" path="res://assets/player.png" id="4"]
+[ext_resource type="Script" path="res://scripts/Runner.gd" id="5"]
+[ext_resource type="Texture2D" path="res://assets/runner1.png" id="6"]
+[ext_resource type="AudioStream" path="res://assets/tag.wav" id="7"]
+[ext_resource type="AudioStream" path="res://assets/ping.wav" id="8"]
+[ext_resource type="Texture2D" path="res://assets/runner2.png" id="9"]
+[ext_resource type="Texture2D" path="res://assets/runner3.png" id="10"]
+[ext_resource type="Texture2D" path="res://assets/btn_next.png" id="11"]
+[ext_resource type="Texture2D" path="res://assets/btn_ping.png" id="12"]
+[ext_resource type="AudioStream" path="res://assets/beep_mid.wav" id="13"]
